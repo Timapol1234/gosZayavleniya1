@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import MainLayout from '@/components/layout/MainLayout'
 import TemplateCard from '@/components/templates/TemplateCard'
@@ -17,7 +17,7 @@ interface PaginationData {
   totalPages: number
 }
 
-export default function TemplatesPage() {
+function TemplatesContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -210,5 +210,26 @@ export default function TemplatesPage() {
         </div>
       </div>
     </MainLayout>
+  )
+}
+
+export default function TemplatesPage() {
+  return (
+    <Suspense
+      fallback={
+        <MainLayout>
+          <div className="container-custom py-8">
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+                <p className="text-text-secondary">Загрузка...</p>
+              </div>
+            </div>
+          </div>
+        </MainLayout>
+      }
+    >
+      <TemplatesContent />
+    </Suspense>
   )
 }

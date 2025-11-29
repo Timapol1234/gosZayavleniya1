@@ -4,6 +4,9 @@ import { prisma } from '@/lib/prisma'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://goszayavleniya.ru'
 
+  // Проверяем наличие DATABASE_URL
+  const isDatabaseAvailable = !!process.env.DATABASE_URL
+
   // Статические страницы
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -31,6 +34,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     },
   ]
+
+  // Если база данных недоступна, возвращаем только статические страницы
+  if (!isDatabaseAvailable) {
+    console.warn('DATABASE_URL not available, returning static pages only')
+    return staticPages
+  }
 
   // Получаем все шаблоны из базы данных
   let templatePages: MetadataRoute.Sitemap = []
