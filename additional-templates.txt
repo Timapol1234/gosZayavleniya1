@@ -1,0 +1,402 @@
+// Добавить перед строкой console.log('🎉 База данных успешно заполнена!')
+
+  // ============= СУДЫ =============
+
+  // Шаблон 5: Исковое заявление о расторжении брака
+  const divorceTemplate = await prisma.template.create({
+    data: {
+      title: 'Исковое заявление о расторжении брака',
+      description: 'Заявление в суд о расторжении брака без согласия супруга или при наличии несовершеннолетних детей',
+      categoryId: categories.find((c) => c.slug === 'courts')!.id,
+      contentJson: JSON.stringify({
+        html: `
+          <div style="font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.5;">
+            <div style="text-align: right; margin-bottom: 20px;">
+              В {{courtName}}<br/>
+              Истец: {{fullName}}<br/>
+              Адрес: {{address}}<br/>
+              Телефон: {{phone}}<br/>
+              Ответчик: {{spouseName}}<br/>
+              Адрес ответчика: {{spouseAddress}}
+            </div>
+
+            <h2 style="text-align: center; margin: 30px 0;">ИСКОВОЕ ЗАЯВЛЕНИЕ</h2>
+            <h3 style="text-align: center; margin: 20px 0;">о расторжении брака</h3>
+
+            <p style="text-indent: 40px;">
+              {{marriageDate}} я вступил(а) в брак с {{spouseName}}. Брак зарегистрирован {{registrationPlace}}, запись акта {{actNumber}}.
+            </p>
+
+            <p style="text-indent: 40px;">
+              От брака имеем {{childrenCount}} детей: {{childrenInfo}}.
+            </p>
+
+            <p style="text-indent: 40px;">
+              Совместная жизнь не сложилась, брачные отношения фактически прекращены с {{separationDate}}. {{divorceReason}}
+            </p>
+
+            <p style="text-indent: 40px;">
+              На основании изложенного и руководствуясь ст. 21-23 Семейного кодекса РФ,
+            </p>
+
+            <h3 style="text-align: center;">ПРОШУ:</h3>
+            <ol>
+              <li>Расторгнуть брак между мной и {{spouseName}}</li>
+              <li>{{propertyDivision}}</li>
+            </ol>
+
+            <div style="margin-top: 40px;">
+              <p>
+                <span style="display: inline-block; width: 150px;">Дата:</span> {{date}}<br/>
+                <span style="display: inline-block; width: 150px;">Подпись:</span> _____________
+              </p>
+            </div>
+          </div>
+        `,
+      }),
+      isActive: true,
+      popularityScore: 80,
+      tags: 'развод,брак,суд,семья',
+      applicantType: 'physical',
+    },
+  })
+
+  await prisma.formField.createMany({
+    data: [
+      { templateId: divorceTemplate.id, fieldName: 'courtName', fieldType: 'text', label: 'Название суда', stepNumber: 1, order: 1, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'fullName', fieldType: 'text', label: 'Ваше ФИО', stepNumber: 1, order: 2, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'address', fieldType: 'text', label: 'Ваш адрес', stepNumber: 1, order: 3, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'phone', fieldType: 'text', label: 'Телефон', stepNumber: 1, order: 4, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'spouseName', fieldType: 'text', label: 'ФИО супруга', stepNumber: 2, order: 1, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'spouseAddress', fieldType: 'text', label: 'Адрес супруга', stepNumber: 2, order: 2, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'marriageDate', fieldType: 'date', label: 'Дата вступления в брак', stepNumber: 2, order: 3, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'registrationPlace', fieldType: 'text', label: 'Место регистрации брака', stepNumber: 2, order: 4, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'actNumber', fieldType: 'text', label: 'Номер записи акта', stepNumber: 2, order: 5, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'childrenCount', fieldType: 'select', label: 'Количество детей', stepNumber: 3, order: 1, isRequired: true, options: '0,1,2,3,более 3' },
+      { templateId: divorceTemplate.id, fieldName: 'childrenInfo', fieldType: 'textarea', label: 'Информация о детях (ФИО, дата рождения)', stepNumber: 3, order: 2, isRequired: false },
+      { templateId: divorceTemplate.id, fieldName: 'separationDate', fieldType: 'date', label: 'Дата прекращения отношений', stepNumber: 3, order: 3, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'divorceReason', fieldType: 'textarea', label: 'Причина развода', stepNumber: 3, order: 4, isRequired: true },
+      { templateId: divorceTemplate.id, fieldName: 'propertyDivision', fieldType: 'textarea', label: 'Требования по разделу имущества', stepNumber: 3, order: 5, isRequired: false },
+      { templateId: divorceTemplate.id, fieldName: 'date', fieldType: 'date', label: 'Дата подачи', stepNumber: 3, order: 6, isRequired: true },
+    ],
+  })
+
+  console.log('✅ Шаблон "Расторжение брака" создан')
+
+  // Шаблон 6: Исковое заявление о взыскании долга
+  const debtTemplate = await prisma.template.create({
+    data: {
+      title: 'Исковое заявление о взыскании долга',
+      description: 'Взыскание долга по расписке или договору займа',
+      categoryId: categories.find((c) => c.slug === 'courts')!.id,
+      contentJson: JSON.stringify({
+        html: `
+          <div style="font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.5;">
+            <div style="text-align: right; margin-bottom: 20px;">
+              В {{courtName}}<br/>
+              Истец: {{fullName}}<br/>
+              Адрес: {{address}}<br/>
+              Ответчик: {{debtorName}}<br/>
+              Адрес ответчика: {{debtorAddress}}
+            </div>
+
+            <h2 style="text-align: center; margin: 30px 0;">ИСКОВОЕ ЗАЯВЛЕНИЕ</h2>
+            <h3 style="text-align: center; margin: 20px 0;">о взыскании долга</h3>
+
+            <p style="text-indent: 40px;">
+              {{loanDate}} я передал(а) {{debtorName}} денежные средства в размере {{amount}} рублей в долг.
+              Факт передачи денег подтверждается {{proofType}}.
+            </p>
+
+            <p style="text-indent: 40px;">
+              Срок возврата денежных средств был установлен до {{returnDate}}.
+            </p>
+
+            <p style="text-indent: 40px;">
+              Несмотря на истечение срока возврата долга, ответчик денежные средства не вернул.
+              {{demandDescription}}
+            </p>
+
+            <p style="text-indent: 40px;">
+              На основании изложенного и руководствуясь ст. 807-810 ГК РФ,
+            </p>
+
+            <h3 style="text-align: center;">ПРОШУ:</h3>
+            <ol>
+              <li>Взыскать с {{debtorName}} сумму долга {{amount}} рублей</li>
+              <li>Взыскать проценты за пользование чужими денежными средствами</li>
+              <li>Взыскать расходы по уплате государственной пошлины</li>
+            </ol>
+
+            <div style="margin-top: 40px;">
+              <p>
+                <span style="display: inline-block; width: 150px;">Дата:</span> {{date}}<br/>
+                <span style="display: inline-block; width: 150px;">Подпись:</span> _____________
+              </p>
+            </div>
+          </div>
+        `,
+      }),
+      isActive: true,
+      popularityScore: 75,
+      tags: 'долг,займ,суд,расписка',
+      applicantType: 'both',
+    },
+  })
+
+  await prisma.formField.createMany({
+    data: [
+      { templateId: debtTemplate.id, fieldName: 'courtName', fieldType: 'text', label: 'Название суда', stepNumber: 1, order: 1, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'fullName', fieldType: 'text', label: 'Ваше ФИО', stepNumber: 1, order: 2, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'address', fieldType: 'text', label: 'Ваш адрес', stepNumber: 1, order: 3, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'debtorName', fieldType: 'text', label: 'ФИО должника', stepNumber: 1, order: 4, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'debtorAddress', fieldType: 'text', label: 'Адрес должника', stepNumber: 1, order: 5, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'loanDate', fieldType: 'date', label: 'Дата передачи денег', stepNumber: 2, order: 1, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'amount', fieldType: 'number', label: 'Сумма долга (руб.)', stepNumber: 2, order: 2, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'proofType', fieldType: 'select', label: 'Документ-подтверждение', stepNumber: 2, order: 3, isRequired: true, options: 'распиской,договором займа,банковской выпиской' },
+      { templateId: debtTemplate.id, fieldName: 'returnDate', fieldType: 'date', label: 'Срок возврата', stepNumber: 2, order: 4, isRequired: true },
+      { templateId: debtTemplate.id, fieldName: 'demandDescription', fieldType: 'textarea', label: 'Описание попыток взыскания', stepNumber: 2, order: 5, isRequired: false },
+      { templateId: debtTemplate.id, fieldName: 'date', fieldType: 'date', label: 'Дата подачи', stepNumber: 2, order: 6, isRequired: true },
+    ],
+  })
+
+  console.log('✅ Шаблон "Взыскание долга" создан')
+
+  // ============= ФНС =============
+
+  // Шаблон 7: Вычет за обучение
+  const educationDeductionTemplate = await prisma.template.create({
+    data: {
+      title: 'Заявление на налоговый вычет за обучение',
+      description: 'Социальный налоговый вычет на образование (свое или детей)',
+      categoryId: categories.find((c) => c.slug === 'fns')!.id,
+      contentJson: JSON.stringify({
+        html: `
+          <div style="font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.5;">
+            <div style="text-align: right; margin-bottom: 20px;">
+              В Инспекцию Федеральной налоговой службы<br/>
+              по {{district}}<br/>
+              от {{fullName}}<br/>
+              ИНН {{inn}}<br/>
+              Адрес: {{address}}
+            </div>
+
+            <h2 style="text-align: center; margin: 30px 0;">ЗАЯВЛЕНИЕ</h2>
+            <h3 style="text-align: center; margin: 20px 0;">о предоставлении налогового вычета</h3>
+
+            <p style="text-indent: 40px;">
+              Прошу предоставить мне социальный налоговый вычет в соответствии с п.2 ст. 219
+              Налогового кодекса РФ за {{year}} год в сумме {{amount}} рублей,
+              уплаченных мной за обучение {{educationType}}.
+            </p>
+
+            <p style="text-indent: 40px;">
+              Обучение проходило в {{institutionName}} (лицензия {{licenseNumber}}).
+            </p>
+
+            <div style="margin-top: 40px;">
+              <p>
+                <span style="display: inline-block; width: 150px;">Дата:</span> {{date}}<br/>
+                <span style="display: inline-block; width: 150px;">Подпись:</span> _____________
+              </p>
+            </div>
+          </div>
+        `,
+      }),
+      isActive: true,
+      popularityScore: 85,
+      tags: 'налоговый вычет,обучение,ФНС,образование',
+      applicantType: 'physical',
+    },
+  })
+
+  await prisma.formField.createMany({
+    data: [
+      { templateId: educationDeductionTemplate.id, fieldName: 'fullName', fieldType: 'text', label: 'ФИО', stepNumber: 1, order: 1, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'inn', fieldType: 'text', label: 'ИНН', stepNumber: 1, order: 2, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'district', fieldType: 'text', label: 'Район/город', stepNumber: 1, order: 3, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'address', fieldType: 'text', label: 'Адрес', stepNumber: 1, order: 4, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'year', fieldType: 'number', label: 'Год', stepNumber: 2, order: 1, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'amount', fieldType: 'number', label: 'Сумма вычета (руб.)', stepNumber: 2, order: 2, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'educationType', fieldType: 'select', label: 'За чье обучение', stepNumber: 2, order: 3, isRequired: true, options: 'свое,своего ребенка,своего брата/сестры' },
+      { templateId: educationDeductionTemplate.id, fieldName: 'institutionName', fieldType: 'text', label: 'Название учебного заведения', stepNumber: 2, order: 4, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'licenseNumber', fieldType: 'text', label: 'Номер лицензии', stepNumber: 2, order: 5, isRequired: true },
+      { templateId: educationDeductionTemplate.id, fieldName: 'date', fieldType: 'date', label: 'Дата', stepNumber: 2, order: 6, isRequired: true },
+    ],
+  })
+
+  console.log('✅ Шаблон "Вычет за обучение" создан')
+
+  // Шаблон 8: Регистрация ИП
+  const ipRegistrationTemplate = await prisma.template.create({
+    data: {
+      title: 'Заявление на регистрацию ИП (форма Р21001)',
+      description: 'Заявление о государственной регистрации физического лица в качестве индивидуального предпринимателя',
+      categoryId: categories.find((c) => c.slug === 'fns')!.id,
+      contentJson: JSON.stringify({
+        html: `
+          <div style="font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.5;">
+            <h2 style="text-align: center; margin: 30px 0;">ЗАЯВЛЕНИЕ</h2>
+            <h3 style="text-align: center; margin: 20px 0;">о государственной регистрации физического лица<br/>в качестве индивидуального предпринимателя</h3>
+
+            <p><strong>Сведения о физическом лице:</strong></p>
+            <p>ФИО: {{fullName}}</p>
+            <p>ИНН: {{inn}}</p>
+            <p>Дата рождения: {{birthDate}}</p>
+            <p>Место рождения: {{birthPlace}}</p>
+            <p>Гражданство: {{citizenship}}</p>
+            <p>Пол: {{gender}}</p>
+
+            <p><strong>Паспортные данные:</strong></p>
+            <p>Серия и номер: {{passportSeries}}</p>
+            <p>Дата выдачи: {{passportDate}}</p>
+            <p>Кем выдан: {{passportIssuer}}</p>
+
+            <p><strong>Адрес места жительства:</strong></p>
+            <p>{{address}}</p>
+
+            <p><strong>Коды ОКВЭД:</strong></p>
+            <p>{{okvedCodes}}</p>
+
+            <div style="margin-top: 40px;">
+              <p>
+                Подтверждаю достоверность и полноту сведений<br/>
+                <span style="display: inline-block; width: 150px;">Дата:</span> {{date}}<br/>
+                <span style="display: inline-block; width: 150px;">Подпись:</span> _____________
+              </p>
+            </div>
+          </div>
+        `,
+      }),
+      isActive: true,
+      popularityScore: 95,
+      tags: 'ИП,предприниматель,регистрация,ФНС,бизнес',
+      applicantType: 'physical',
+    },
+  })
+
+  await prisma.formField.createMany({
+    data: [
+      { templateId: ipRegistrationTemplate.id, fieldName: 'fullName', fieldType: 'text', label: 'ФИО (полностью)', stepNumber: 1, order: 1, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'inn', fieldType: 'text', label: 'ИНН', stepNumber: 1, order: 2, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'birthDate', fieldType: 'date', label: 'Дата рождения', stepNumber: 1, order: 3, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'birthPlace', fieldType: 'text', label: 'Место рождения', stepNumber: 1, order: 4, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'citizenship', fieldType: 'text', label: 'Гражданство', placeholder: 'Российская Федерация', stepNumber: 1, order: 5, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'gender', fieldType: 'select', label: 'Пол', stepNumber: 1, order: 6, isRequired: true, options: 'Мужской,Женский' },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'passportSeries', fieldType: 'text', label: 'Серия и номер паспорта', stepNumber: 2, order: 1, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'passportDate', fieldType: 'date', label: 'Дата выдачи паспорта', stepNumber: 2, order: 2, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'passportIssuer', fieldType: 'text', label: 'Кем выдан паспорт', stepNumber: 2, order: 3, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'address', fieldType: 'text', label: 'Адрес регистрации', stepNumber: 2, order: 4, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'okvedCodes', fieldType: 'textarea', label: 'Коды ОКВЭД (через запятую)', stepNumber: 2, order: 5, isRequired: true },
+      { templateId: ipRegistrationTemplate.id, fieldName: 'date', fieldType: 'date', label: 'Дата подачи', stepNumber: 2, order: 6, isRequired: true },
+    ],
+  })
+
+  console.log('✅ Шаблон "Регистрация ИП" создан')
+
+  // ============= РАБОТОДАТЕЛИ =============
+
+  // Шаблон 9: Заявление на отпуск
+  const vacationTemplate = await prisma.template.create({
+    data: {
+      title: 'Заявление на ежегодный оплачиваемый отпуск',
+      description: 'Заявление работника на предоставление очередного отпуска',
+      categoryId: categories.find((c) => c.slug === 'employers')!.id,
+      contentJson: JSON.stringify({
+        html: `
+          <div style="font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.5;">
+            <div style="text-align: right; margin-bottom: 20px;">
+              {{companyName}}<br/>
+              {{directorName}}<br/>
+              от {{fullName}}<br/>
+              Должность: {{position}}
+            </div>
+
+            <h2 style="text-align: center; margin: 30px 0;">ЗАЯВЛЕНИЕ</h2>
+
+            <p style="text-indent: 40px;">
+              Прошу предоставить мне ежегодный оплачиваемый отпуск продолжительностью {{days}} календарных дней
+              с {{startDate}} по {{endDate}}.
+            </p>
+
+            <div style="margin-top: 40px;">
+              <p>
+                <span style="display: inline-block; width: 150px;">Дата:</span> {{date}}<br/>
+                <span style="display: inline-block; width: 150px;">Подпись:</span> _____________
+              </p>
+            </div>
+          </div>
+        `,
+      }),
+      isActive: true,
+      popularityScore: 100,
+      tags: 'отпуск,работа,работодатель,отдых',
+      applicantType: 'physical',
+    },
+  })
+
+  await prisma.formField.createMany({
+    data: [
+      { templateId: vacationTemplate.id, fieldName: 'companyName', fieldType: 'text', label: 'Название организации', stepNumber: 1, order: 1, isRequired: true },
+      { templateId: vacationTemplate.id, fieldName: 'directorName', fieldType: 'text', label: 'ФИО директора', stepNumber: 1, order: 2, isRequired: true },
+      { templateId: vacationTemplate.id, fieldName: 'fullName', fieldType: 'text', label: 'Ваше ФИО', stepNumber: 1, order: 3, isRequired: true },
+      { templateId: vacationTemplate.id, fieldName: 'position', fieldType: 'text', label: 'Должность', stepNumber: 1, order: 4, isRequired: true },
+      { templateId: vacationTemplate.id, fieldName: 'startDate', fieldType: 'date', label: 'Дата начала отпуска', stepNumber: 2, order: 1, isRequired: true },
+      { templateId: vacationTemplate.id, fieldName: 'endDate', fieldType: 'date', label: 'Дата окончания отпуска', stepNumber: 2, order: 2, isRequired: true },
+      { templateId: vacationTemplate.id, fieldName: 'days', fieldType: 'number', label: 'Количество дней', stepNumber: 2, order: 3, isRequired: true },
+      { templateId: vacationTemplate.id, fieldName: 'date', fieldType: 'date', label: 'Дата подачи', stepNumber: 2, order: 4, isRequired: true },
+    ],
+  })
+
+  console.log('✅ Шаблон "Заявление на отпуск" создан')
+
+  // Шаблон 10: Заявление об увольнении
+  const resignationTemplate = await prisma.template.create({
+    data: {
+      title: 'Заявление об увольнении по собственному желанию',
+      description: 'Заявление работника об увольнении по инициативе работника (ст. 80 ТК РФ)',
+      categoryId: categories.find((c) => c.slug === 'employers')!.id,
+      contentJson: JSON.stringify({
+        html: `
+          <div style="font-family: 'Times New Roman', serif; font-size: 14pt; line-height: 1.5;">
+            <div style="text-align: right; margin-bottom: 20px;">
+              {{companyName}}<br/>
+              {{directorName}}<br/>
+              от {{fullName}}<br/>
+              Должность: {{position}}
+            </div>
+
+            <h2 style="text-align: center; margin: 30px 0;">ЗАЯВЛЕНИЕ</h2>
+
+            <p style="text-indent: 40px;">
+              Прошу уволить меня по собственному желанию с {{dismissalDate}} на основании статьи 80 Трудового кодекса РФ.
+            </p>
+
+            <div style="margin-top: 40px;">
+              <p>
+                <span style="display: inline-block; width: 150px;">Дата:</span> {{date}}<br/>
+                <span style="display: inline-block; width: 150px;">Подпись:</span> _____________
+              </p>
+            </div>
+          </div>
+        `,
+      }),
+      isActive: true,
+      popularityScore: 90,
+      tags: 'увольнение,работа,работодатель,трудовой кодекс',
+      applicantType: 'physical',
+    },
+  })
+
+  await prisma.formField.createMany({
+    data: [
+      { templateId: resignationTemplate.id, fieldName: 'companyName', fieldType: 'text', label: 'Название организации', stepNumber: 1, order: 1, isRequired: true },
+      { templateId: resignationTemplate.id, fieldName: 'directorName', fieldType: 'text', label: 'ФИО директора', stepNumber: 1, order: 2, isRequired: true },
+      { templateId: resignationTemplate.id, fieldName: 'fullName', fieldType: 'text', label: 'Ваше ФИО', stepNumber: 1, order: 3, isRequired: true },
+      { templateId: resignationTemplate.id, fieldName: 'position', fieldType: 'text', label: 'Должность', stepNumber: 1, order: 4, isRequired: true },
+      { templateId: resignationTemplate.id, fieldName: 'dismissalDate', fieldType: 'date', label: 'Дата увольнения', stepNumber: 2, order: 1, isRequired: true },
+      { templateId: resignationTemplate.id, fieldName: 'date', fieldType: 'date', label: 'Дата подачи', stepNumber: 2, order: 2, isRequired: true },
+    ],
+  })
+
+  console.log('✅ Шаблон "Увольнение" создан')
