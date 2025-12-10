@@ -61,8 +61,8 @@ async function sendEmailViaNodemailer(params: {
 
     // Отправляем с красивым именем отправителя
     await transporter.sendMail({
-      from: `"МойДокумент Support" <${smtpUser}>`,
-      replyTo: 'support@mydocuments.ru', // Ответы пойдут на этот адрес
+      from: `"oneclickdoc Support" <${smtpUser}>`,
+      replyTo: 'support@oneclickdoc.ru', // Ответы пойдут на этот адрес
       to: params.to,
       subject: params.subject,
       html: params.html,
@@ -87,7 +87,7 @@ export async function sendEmail(params: {
   const apiKey = process.env.RESEND_API_KEY
   const smtpUser = process.env.SMTP_USER
   const smtpPassword = process.env.SMTP_PASSWORD
-  const fromEmail = process.env.EMAIL_FROM || 'noreply@goszayavleniya.ru'
+  const fromEmail = process.env.EMAIL_FROM || 'noreply@oneclickdoc.ru'
   const isDev = process.env.NODE_ENV === 'development'
 
   // Если есть SMTP настройки - используем Nodemailer
@@ -204,23 +204,23 @@ export async function sendVerificationEmail(
     </head>
     <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f5f5;">
       <div style="max-width: 600px; margin: 40px auto; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
-          <h1 style="color: white; margin: 0; font-size: 24px;">МойДокумент</h1>
+        <div style="background: linear-gradient(135deg, #2d5b88 0%, #3a75b3 100%); padding: 30px; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 24px;">oneclickdoc</h1>
         </div>
 
         <div style="padding: 40px 30px;">
           <h2 style="color: #333; margin: 0 0 20px 0; font-size: 20px;">Подтверждение регистрации</h2>
 
           <p style="color: #666; line-height: 1.6; margin: 0 0 30px 0;">
-            Здравствуйте! Вы получили это письмо, потому что кто-то использовал ваш email для регистрации в сервисе "МойДокумент".
+            Здравствуйте! Вы получили это письмо, потому что кто-то использовал ваш email для регистрации в сервисе oneclickdoc.
           </p>
 
           <p style="color: #666; line-height: 1.6; margin: 0 0 20px 0;">
             Ваш код подтверждения:
           </p>
 
-          <div style="background-color: #f8f9fa; border: 2px solid #667eea; border-radius: 8px; padding: 20px; text-align: center; margin: 0 0 30px 0;">
-            <div style="font-size: 32px; font-weight: bold; color: #667eea; letter-spacing: 8px; font-family: 'Courier New', monospace;">
+          <div style="background-color: #f8f9fa; border: 2px solid #2d5b88; border-radius: 8px; padding: 20px; text-align: center; margin: 0 0 30px 0;">
+            <div style="font-size: 32px; font-weight: bold; color: #2d5b88; letter-spacing: 8px; font-family: 'Courier New', monospace;">
               ${code}
             </div>
           </div>
@@ -235,7 +235,7 @@ export async function sendVerificationEmail(
         </div>
 
         <div style="background-color: #f8f9fa; padding: 20px 30px; text-align: center; font-size: 12px; color: #999;">
-          <p style="margin: 0;">© 2024 МойДокумент. Все права защищены.</p>
+          <p style="margin: 0;">© 2025 oneclickdoc. Все права защищены.</p>
         </div>
       </div>
     </body>
@@ -244,7 +244,7 @@ export async function sendVerificationEmail(
 
   return sendEmail({
     to: email,
-    subject: 'Код подтверждения - МойДокумент',
+    subject: 'Код подтверждения - oneclickdoc',
     html,
   })
 }
