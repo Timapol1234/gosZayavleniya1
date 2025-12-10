@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Вход в личный кабинет | МойДокумент',
+  title: 'Вход в личный кабинет | oneclickdoc',
   description:
     'Войдите в личный кабинет для доступа к вашим сохраненным заявлениям и документам. Быстрый и безопасный вход.',
   openGraph: {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     description: 'Войдите в личный кабинет конструктора заявлений',
     type: 'website',
     locale: 'ru_RU',
-    url: 'https://goszayavleniya.ru/login',
+    url: 'https://oneclickdoc.ru/login',
   },
   robots: {
     index: false,

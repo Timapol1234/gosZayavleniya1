@@ -6,12 +6,12 @@ export const metadata: Metadata = {
     'Зарегистрируйтесь в конструкторе заявлений для сохранения документов и быстрого доступа к своим заявлениям. Регистрация бесплатная.',
   keywords: 'регистрация, создать аккаунт, бесплатная регистрация',
   openGraph: {
-    title: 'Регистрация | МойДокумент',
+    title: 'Регистрация | oneclickdoc',
     description:
       'Создайте бесплатный аккаунт для сохранения и управления вашими заявлениями',
     type: 'website',
     locale: 'ru_RU',
-    url: 'https://goszayavleniya.ru/register',
+    url: 'https://oneclickdoc.ru/register',
   },
   robots: {
     index: false,

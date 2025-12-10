@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import MainLayout from '@/components/layout/MainLayout'
 
 export const metadata: Metadata = {
-  title: 'Отказ от ответственности | МойДокумент',
+  title: 'Отказ от ответственности | oneclickdoc',
   description:
-    'Отказ от ответственности и ограничение гарантий при использовании сервиса МойДокумент',
+    'Отказ от ответственности и ограничение гарантий при использовании сервиса oneclickdoc',
 }
 
 export default function DisclaimerPage() {
@@ -25,7 +25,7 @@ export default function DisclaimerPage() {
               ⚠️ Важное предупреждение
             </h2>
             <p className="text-yellow-800 leading-relaxed">
-              Сервис <strong>МойДокумент</strong> предоставляет инструменты для
+              Сервис <strong>oneclickdoc</strong> предоставляет инструменты для
               создания документов на основе шаблонов. Мы не являемся юридической
               компанией и не предоставляем юридические консультации. Все документы
               создаются автоматически на основе введенных вами данных.
@@ -38,7 +38,7 @@ export default function DisclaimerPage() {
             </h2>
             <p>
               Настоящий отказ от ответственности (далее — «Отказ») применяется ко
-              всем пользователям сервиса <strong>МойДокумент</strong> (далее —
+              всем пользователям сервиса <strong>oneclickdoc</strong> (далее —
               «Сервис», «Мы»).
             </p>
             <p>
@@ -57,7 +57,7 @@ export default function DisclaimerPage() {
               2. Не является юридической услугой
             </h2>
             <p>
-              <strong>МойДокумент</strong> — это технологический инструмент для
+              <strong>oneclickdoc</strong> — это технологический инструмент для
               автоматизации создания документов. Мы <strong>НЕ</strong>:
             </p>
             <ul className="list-disc space-y-2 pl-6">
@@ -309,17 +309,17 @@ export default function DisclaimerPage() {
             <p className="mt-2">
               Email:{' '}
               <a
-                href="mailto:support@goszayavleniya.ru"
+                href="mailto:support@oneclickdoc.ru"
                 className="text-primary hover:underline"
               >
-                support@goszayavleniya.ru
+                support@oneclickdoc.ru
               </a>
             </p>
           </section>
 
           <div className="mt-8 rounded-lg bg-gray-800 p-6 text-white">
             <p className="text-center text-sm">
-              Используя сервис <strong>МойДокумент</strong>, вы подтверждаете,
+              Используя сервис <strong>oneclickdoc</strong>, вы подтверждаете,
               что прочитали, поняли и согласны с настоящим Отказом от
               ответственности, а также с{' '}
               <a href="/terms" className="underline hover:text-gray-300">

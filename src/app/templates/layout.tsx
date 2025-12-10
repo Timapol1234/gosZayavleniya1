@@ -12,10 +12,10 @@ export const metadata: Metadata = {
       'Более 50 готовых шаблонов заявлений для различных организаций. Юридически корректные документы.',
     type: 'website',
     locale: 'ru_RU',
-    url: 'https://goszayavleniya.ru/templates',
+    url: 'https://oneclickdoc.ru/templates',
   },
   alternates: {
-    canonical: 'https://goszayavleniya.ru/templates',
+    canonical: 'https://oneclickdoc.ru/templates',
   },
 }
 

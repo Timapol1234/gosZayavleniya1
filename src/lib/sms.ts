@@ -74,6 +74,6 @@ export async function sendVerificationSMS(
   phone: string,
   code: string
 ): Promise<{ success: boolean; error?: string }> {
-  const message = `Ваш код подтверждения: ${code}\n\nМойДокумент`
+  const message = `Ваш код подтверждения: ${code}\n\noneclickdoc`
   return sendSMS(phone, message)
 }
